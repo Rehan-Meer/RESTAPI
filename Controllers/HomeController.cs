@@ -9,7 +9,7 @@ namespace BasicAPI.Controllers
 {
     [ApiController]
     [Route(RouteConstants.Home)]
-    public class HomeController : ControllerBase
+    public class HomeController : ApiController
     {
         private readonly IBreakfastService breakfastService;
 
@@ -41,6 +41,8 @@ namespace BasicAPI.Controllers
             BreakfastResponseDto breakfastResponseDto = new BreakfastResponseDto { Id = internalModelObject.Id, Name = internalModelObject.Name };
             return Ok(breakfastResponseDto);
         }
+
+
         [HttpPut]
         [Route(RouteConstants.UpdateBreakfast)]
         public IActionResult PutAll(BreakfastRequest _request)
@@ -50,6 +52,7 @@ namespace BasicAPI.Controllers
             BreakfastResponseDto breakfastResponseDto = new BreakfastResponseDto { Id = internalModelObject.Id, Name = internalModelObject.Name };
             return Ok(breakfastResponseDto);
         }
+
 
         [HttpDelete]
         [Route(RouteConstants.DeleteBreakfast)]

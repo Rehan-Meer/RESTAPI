@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
+﻿using BasicAPI.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
-namespace BasicAPI.Controllers
+[Route("api/error")]
+[ApiController]
+[ApiExplorerSettings(IgnoreApi = true)]
+public class ExceptionController : ApiController
 {
-    public class ExceptionController : ControllerBase
-    {
-        [HttpOptions]
-        [Route("/error")]
-        public IActionResult GetException()
-        {
-            return Problem();
-        }
-    }
+    [Route("error")]
+    public IActionResult Error() => Problem();
 }

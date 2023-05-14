@@ -1,4 +1,5 @@
 ﻿using BasicAPI.InternalModels;
+using ErrorOr;
 using System.Diagnostics.CodeAnalysis;
 
 namespace BasicAPI.Services.GetService
@@ -7,7 +8,6 @@ namespace BasicAPI.Services.GetService
     {
         private static readonly Dictionary<int, BreakfastModel> _result = new();
 
-
         public void CreateBreakfast(BreakfastModel _request) => _result.Add(_request.Id, _request);
 
         public BreakfastModel GetBreakfast(int _id) => _result[_id];
@@ -15,5 +15,6 @@ namespace BasicAPI.Services.GetService
         public void UpdateBreakfast(BreakfastModel request) => _result[request.Id] = request;
 
         public void DeleteBreakfast(int id) => _result.Remove(id);
+
     }
 }
