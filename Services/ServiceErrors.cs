@@ -4,6 +4,6 @@ namespace BasicAPI.Services
     public static class ServiceErrors
     {
 
-        public static Error NotFound() => Error.NotFound();
+        public static Error NotFound => Error.NotFound(StringConstants.BreakfastNotFound);
     }
 }

@@ -1,20 +1,40 @@
 ﻿using BasicAPI.InternalModels;
 using ErrorOr;
-using System.Diagnostics.CodeAnalysis;
 
 namespace BasicAPI.Services.GetService
 {
     public class BreakfastService : IBreakfastService
     {
-        private static readonly Dictionary<int, BreakfastModel> _result = new();
+        private static readonly Dictionary<int, BreakfastModel> _breakfasts = new();
 
-        public void CreateBreakfast(BreakfastModel _request) => _result.Add(_request.Id, _request);
+        public ErrorOr<Created> CreateBreakfast(BreakfastModel _request)
+        {
+            _breakfasts.Add(_request.Id, _request);
+            return Result.Created;
+        }
 
-        public BreakfastModel GetBreakfast(int _id) => _result[_id];
+        public ErrorOr<BreakfastModel> GetBreakfast(int _id)
+        {
 
-        public void UpdateBreakfast(BreakfastModel request) => _result[request.Id] = request;
+            if (_breakfasts.TryGetValue(_id, out BreakfastModel? response))
+                return response;
+            else
+                return ServiceErrors.NotFound;
 
-        public void DeleteBreakfast(int id) => _result.Remove(id);
+        }
+        public ErrorOr<Updated> UpdateBreakfast(BreakfastModel request)
+        {
+            if (!_breakfasts.ContainsKey(request.Id))
+                _breakfasts[request.Id] = request;
 
+            return Result.Updated;
+        }
+
+        public ErrorOr<Deleted> DeleteBreakfast(int id)
+        {
+            if (_breakfasts.ContainsKey(id))
+                _breakfasts.Remove(id);
+            return Result.Deleted;
+        }
     }
 }

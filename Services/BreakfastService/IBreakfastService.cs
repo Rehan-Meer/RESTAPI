@@ -1,16 +1,16 @@
-﻿using BasicAPI.DTOs;
-using BasicAPI.InternalModels;
+﻿using BasicAPI.InternalModels;
+using ErrorOr;
 
 namespace BasicAPI.Services.GetService
 {
     public interface IBreakfastService
     {
-        void CreateBreakfast(BreakfastModel _request);
+        ErrorOr<Created> CreateBreakfast(BreakfastModel Request);
 
-        BreakfastModel GetBreakfast(int _id);
+        ErrorOr<BreakfastModel> GetBreakfast(int Id);
 
-        void UpdateBreakfast(BreakfastModel id);
+        ErrorOr<Updated> UpdateBreakfast(BreakfastModel Request);
 
-        void DeleteBreakfast(int id);
+        ErrorOr<Deleted> DeleteBreakfast(int Id);
     }
 }

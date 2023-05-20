@@ -1,45 +1,58 @@
-﻿using BasicAPI.DTOs;
+﻿using AutoMapper;
+using BasicAPI.DTOs;
 using BasicAPI.InternalModels;
 using BasicAPI.RequestModels;
 using BasicAPI.Services.GetService;
+using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Nodes;
 
 namespace BasicAPI.Controllers
 {
-    [ApiController]
-    [Route(RouteConstants.Home)]
+
     public class HomeController : ApiController
     {
         private readonly IBreakfastService breakfastService;
 
-        public HomeController(IBreakfastService _breakfastService) => breakfastService = _breakfastService;
+        private readonly IMapper mapper;
+
+        public HomeController(IBreakfastService BreakfastService, IMapper _mapper)
+        {
+            breakfastService = BreakfastService;
+            mapper = _mapper;
+        }
 
 
         [HttpGet]
         [Route(RouteConstants.GetBreakfast)]
-        public ActionResult GetBreakfast(int id)
+        public IActionResult GetBreakfast(int ID)
         {
-            // Get the data according to request in your internal model
-            // Translate the internal model back to its equivalent Dto
-            // Return that Dto
-            var response = breakfastService.GetBreakfast(id);
-            BreakfastResponseDto breakfastResponseDto = new BreakfastResponseDto { Id = response.Id, Name = response.Name };
-            return Ok(breakfastResponseDto);
+            ErrorOr<BreakfastModel> response = breakfastService.GetBreakfast(ID);
+
+            if (response.IsError)
+                return GetProblem(response.Errors);
+            else
+            {
+                BreakfastResponseDto breakfastResponseDto = mapper.Map<BreakfastResponseDto>(response.Value);
+                return Ok(breakfastResponseDto);
+            }
         }
 
+
         [HttpPost]
-        [Route(RouteConstants.SaveBreakfast)]
-        public ActionResult Savebreakfast(BreakfastRequest _request)
+        [Route(RouteConstants.CreateBreakfast)]
+        public IActionResult Createbreakfast(BreakfastRequest _request)
+
         {
-            // Get the data according to request in your internal model
-            // Save internal model in the database.
-            // Translate the Internal model back to its equivalent Dto
-            // Return that Dto
             BreakfastModel internalModelObject = new(_request.Id, _request.Name);
-            breakfastService.CreateBreakfast(internalModelObject);
-            BreakfastResponseDto breakfastResponseDto = new BreakfastResponseDto { Id = internalModelObject.Id, Name = internalModelObject.Name };
-            return Ok(breakfastResponseDto);
+            ErrorOr<Created> response = breakfastService.CreateBreakfast(internalModelObject);
+
+            if (response.IsError)
+                return GetProblem(response.Errors);
+            else
+            {
+                BreakfastResponseDto breakfastResponseDto = mapper.Map<BreakfastResponseDto>(response.Value);
+                return Ok(breakfastResponseDto);
+            }
         }
 
 
@@ -48,17 +61,17 @@ namespace BasicAPI.Controllers
         public IActionResult PutAll(BreakfastRequest _request)
         {
             BreakfastModel internalModelObject = new(_request.Id, _request.Name);
-            breakfastService.UpdateBreakfast(internalModelObject);
-            BreakfastResponseDto breakfastResponseDto = new BreakfastResponseDto { Id = internalModelObject.Id, Name = internalModelObject.Name };
+            ErrorOr<Updated> response = breakfastService.UpdateBreakfast(internalModelObject);
+            BreakfastResponseDto breakfastResponseDto = mapper.Map<BreakfastResponseDto>(response.Value);
             return Ok(breakfastResponseDto);
         }
 
 
         [HttpDelete]
         [Route(RouteConstants.DeleteBreakfast)]
-        public IActionResult DeleteBreakfast(int id)
+        public IActionResult DeleteBreakfast(int ID)
         {
-            breakfastService.DeleteBreakfast(id);
+            breakfastService.DeleteBreakfast(ID);
             return Ok();
         }
     }

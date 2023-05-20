@@ -12,7 +12,7 @@
 
         public const string GetBreakfast = "GetBreakfast";
 
-        public const string SaveBreakfast = "SaveBreakfast";
+        public const string CreateBreakfast = "CreateBreakfast";
 
         public const string UpdateBreakfast = "UpdateBreakfast";
 
