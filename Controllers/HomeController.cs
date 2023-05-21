@@ -4,6 +4,7 @@ using BasicAPI.InternalModels;
 using BasicAPI.RequestModels;
 using BasicAPI.Services.GetService;
 using ErrorOr;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasicAPI.Controllers
@@ -41,7 +42,6 @@ namespace BasicAPI.Controllers
         [HttpPost]
         [Route(RouteConstants.CreateBreakfast)]
         public IActionResult Createbreakfast(BreakfastRequest _request)
-
         {
             BreakfastModel internalModelObject = new(_request.Id, _request.Name);
             ErrorOr<Created> response = breakfastService.CreateBreakfast(internalModelObject);
@@ -49,10 +49,7 @@ namespace BasicAPI.Controllers
             if (response.IsError)
                 return GetProblem(response.Errors);
             else
-            {
-                BreakfastResponseDto breakfastResponseDto = mapper.Map<BreakfastResponseDto>(response.Value);
-                return Ok(breakfastResponseDto);
-            }
+                return Ok();
         }
 
 
