@@ -1,15 +1,14 @@
-﻿using BasicAPI.InternalModels;
-using ErrorOr;
+﻿using ErrorOr;
 
 namespace BasicAPI.Services.GetService
 {
     public interface IBreakfastService
     {
-        ErrorOr<Created> CreateBreakfast(BreakfastModel Request);
+        ErrorOr<Created> CreateBreakfast(Breakfast request);
 
-        ErrorOr<BreakfastModel> GetBreakfast(int Id);
+        ErrorOr<Breakfast> GetBreakfast(int Id);
 
-        ErrorOr<Updated> UpdateBreakfast(BreakfastModel Request);
+        ErrorOr<Updated> UpdateBreakfast(Breakfast request);
 
         ErrorOr<Deleted> DeleteBreakfast(int Id);
     }

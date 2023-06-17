@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace BasicAPI.Controllers
 {
     [ApiController]
-    [Route(RouteConstants.Main)]
-    public class ApiController : ControllerBase
+    [Route(RouteConstants.MainController)]
+    public class MainController : ControllerBase
     {
+        [Route(RouteConstants.GlobalExceptionHandler)]
         protected IActionResult GetProblem(List<Error> errors)
         {
             Error firstError = errors.FirstOrDefault();

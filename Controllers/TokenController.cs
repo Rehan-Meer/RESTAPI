@@ -1,42 +1,31 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 
 namespace BasicAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class JWTController : ControllerBase
+    [Route(RouteConstants.TokenController)]
+    public class TokenController : ControllerBase
     {
         private readonly IConfiguration _config;
-        public JWTController(IConfiguration config) => _config = config;
+        public TokenController(IConfiguration config) => _config = config;
 
-        [Route("Login")]
+        [Route(RouteConstants.GenerateToken)]
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Login(UserLogin userLogin)
+        public ActionResult TokenManager(User user)
         {
-            var user = Authenticate(userLogin);
-            if (user != null)
-            {
-                var token = GenerateToken();
-                return Ok(token);
-            }
-
-            return NotFound("user not found");
+            string token = user != null ? TokenGenerator() : string.Empty;
+            return Ok(token);
         }
 
-
-        private string GenerateToken()
+        private string TokenGenerator()
         {
             SymmetricSecurityKey SecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256);
-
-            // claims: to be added later
 
             var token = new JwtSecurityToken(
                 _config["Jwt:Issuer"],
@@ -46,11 +35,6 @@ namespace BasicAPI.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
-        // need to be improved
-        private UserModel Authenticate(UserLogin userLogin) => new UserModel { Username = userLogin.Username, Password = userLogin.Password };
-
-
-
     }
 }
+

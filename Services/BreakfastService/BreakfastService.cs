@@ -1,39 +1,35 @@
-﻿using BasicAPI.InternalModels;
-using ErrorOr;
+﻿using ErrorOr;
 
 namespace BasicAPI.Services.GetService
 {
     public class BreakfastService : IBreakfastService
     {
-        private static readonly Dictionary<int, BreakfastModel> _breakfasts = new();
+        private static readonly Dictionary<int, Breakfast> _breakfasts = new();
 
-        public ErrorOr<Created> CreateBreakfast(BreakfastModel _request)
+        public ErrorOr<Created> CreateBreakfast(Breakfast request)
         {
-            _breakfasts.Add(_request.Id, _request);
+            _breakfasts.Add(request.Id, request);
             return Result.Created;
         }
-
-        public ErrorOr<BreakfastModel> GetBreakfast(int _id)
+        public ErrorOr<Breakfast> GetBreakfast(int Id)
         {
-
-            if (_breakfasts.TryGetValue(_id, out BreakfastModel? response))
+            if (_breakfasts.TryGetValue(Id, out Breakfast? response))
                 return response;
             else
-                return ServiceErrors.NotFound;
+                return Error.NotFound("Breakfast not found.");
 
         }
-        public ErrorOr<Updated> UpdateBreakfast(BreakfastModel request)
+        public ErrorOr<Updated> UpdateBreakfast(Breakfast request)
         {
             if (!_breakfasts.ContainsKey(request.Id))
                 _breakfasts[request.Id] = request;
 
             return Result.Updated;
         }
-
-        public ErrorOr<Deleted> DeleteBreakfast(int id)
+        public ErrorOr<Deleted> DeleteBreakfast(int Id)
         {
-            if (_breakfasts.ContainsKey(id))
-                _breakfasts.Remove(id);
+            if (_breakfasts.ContainsKey(Id))
+                _breakfasts.Remove(Id);
             return Result.Deleted;
         }
     }

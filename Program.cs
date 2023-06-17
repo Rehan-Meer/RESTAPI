@@ -42,7 +42,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseExceptionHandler("/api/error/error");
+app.UseExceptionHandler("/api/Main/GlobalExceptionHandler");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
