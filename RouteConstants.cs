@@ -4,7 +4,7 @@
     {
         #region Controller Routes
 
-        public const string Home = "api/Home";
+        public const string Main = "api/Main";
 
         #endregion
 
@@ -17,10 +17,6 @@
         public const string UpdateBreakfast = "UpdateBreakfast";
 
         public const string DeleteBreakfast = "DeleteBreakfast";
-
-        #endregion
-
-        #region Exception
 
         #endregion
     }

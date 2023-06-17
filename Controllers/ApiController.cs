@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace BasicAPI.Controllers
 {
     [ApiController]
-    [Route(RouteConstants.Home)]
+    [Route(RouteConstants.Main)]
     public class ApiController : ControllerBase
     {
         protected IActionResult GetProblem(List<Error> errors)
         {
-            var firstError = errors[0];
-            var statusCode = firstError.Type switch
+            Error firstError = errors.FirstOrDefault();
+            int statusCode = firstError.Type switch
             {
                 ErrorType.NotFound => StatusCodes.Status404NotFound,
                 ErrorType.Validation => StatusCodes.Status400BadRequest,
