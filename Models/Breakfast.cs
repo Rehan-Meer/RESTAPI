@@ -1,8 +1,11 @@
-﻿namespace BasicAPI
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BasicAPI
 {
     public class Breakfast
     {
-        public int Id { get; }
-        public string Name { get; }
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
