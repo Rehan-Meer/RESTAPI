@@ -6,6 +6,6 @@ namespace BasicAPI.DBContext
     {
         public BreakfastContext(DbContextOptions<BreakfastContext> options) : base(options){}
 
-        public DbSet<Breakfast> breakfast { get; set; }
+        public DbSet<Breakfast> Breakfast { get; set; }
     }
 }

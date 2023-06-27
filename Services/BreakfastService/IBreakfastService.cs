@@ -1,15 +1,16 @@
-﻿using ErrorOr;
+﻿using BasicAPI.DBContext;
+using ErrorOr;
 
 namespace BasicAPI.Services.GetService
 {
     public interface IBreakfastService
     {
-        ErrorOr<Created> CreateBreakfast(Breakfast request);
+        ErrorOr<Created> CreateBreakfast(Breakfast request, BreakfastContext breakfastContext);
 
-        ErrorOr<Breakfast> GetBreakfast(int Id);
+        ErrorOr<Breakfast> GetBreakfast(int Id, BreakfastContext breakfastContext);
 
-        ErrorOr<Updated> UpdateBreakfast(Breakfast request);
+        ErrorOr<Updated> UpdateBreakfast(Breakfast request, BreakfastContext breakfastContext);
 
-        ErrorOr<Deleted> DeleteBreakfast(int Id);
+        ErrorOr<Deleted> DeleteBreakfast(int Id, BreakfastContext breakfastContext);
     }
 }

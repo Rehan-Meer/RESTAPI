@@ -1,36 +1,44 @@
-﻿using ErrorOr;
+﻿using Azure.Core;
+using BasicAPI.DBContext;
+using ErrorOr;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BasicAPI.Services.GetService
 {
     public class BreakfastService : IBreakfastService
     {
-        private static readonly Dictionary<int, Breakfast> _breakfasts = new();
-
-        public ErrorOr<Created> CreateBreakfast(Breakfast request)
+        public ErrorOr<Created> CreateBreakfast(Breakfast request, BreakfastContext breakfastContext)
         {
-            _breakfasts.Add(request.Id, request);
+            breakfastContext.Breakfast.Add(request);
+            breakfastContext.SaveChanges();
             return Result.Created;
         }
-        public ErrorOr<Breakfast> GetBreakfast(int Id)
+        public ErrorOr<Breakfast> GetBreakfast(int Id, BreakfastContext breakfastContext)
         {
-            if (_breakfasts.TryGetValue(Id, out Breakfast? response))
-                return response;
-            else
-                return Error.NotFound("Breakfast not found.");
-
+            return breakfastContext.Breakfast.Find(Id) != null ? breakfastContext.Breakfast.Find(Id) : Error.NotFound("Breakfast not found.");
         }
-        public ErrorOr<Updated> UpdateBreakfast(Breakfast request)
+
+        public ErrorOr<Updated> UpdateBreakfast(Breakfast request, BreakfastContext breakfastContext)
         {
-            if (!_breakfasts.ContainsKey(request.Id))
-                _breakfasts[request.Id] = request;
 
             return Result.Updated;
         }
-        public ErrorOr<Deleted> DeleteBreakfast(int Id)
+        public ErrorOr<Deleted> DeleteBreakfast(int Id, BreakfastContext breakfastContext)
         {
-            if (_breakfasts.ContainsKey(Id))
-                _breakfasts.Remove(Id);
-            return Result.Deleted;
+            if (!breakfastContext.Breakfast.IsNullOrEmpty())
+            {
+                var toBeDeleted = breakfastContext.Breakfast.Find(Id);
+                if (toBeDeleted != null)
+                {
+                    breakfastContext.Breakfast.Remove(toBeDeleted);
+                    breakfastContext.SaveChanges();
+                    return Result.Deleted;
+                }
+                else
+                    return Error.NotFound("Breakfast not found.");
+            }
+            else
+                return Error.NotFound("Breakfast not found.");
         }
     }
 }
