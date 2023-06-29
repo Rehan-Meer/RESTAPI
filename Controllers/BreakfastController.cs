@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BasicAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class BreakfastController : MainController
     {
         private readonly IBreakfastService breakfastService;                                       // Service dependency Injection

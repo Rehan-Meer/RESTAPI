@@ -3,6 +3,7 @@ using BasicAPI.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BasicAPI.Migrations
 {
     [DbContext(typeof(BreakfastContext))]
-    partial class BreakfastContextModelSnapshot : ModelSnapshot
+    [Migration("20230629140109_Breakfast_NewProperties")]
+    partial class Breakfast_NewProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +44,7 @@ namespace BasicAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Breakfast", (string)null);
+                    b.ToTable("Breakfast");
                 });
 #pragma warning restore 612, 618
         }

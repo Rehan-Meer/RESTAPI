@@ -17,11 +17,22 @@ namespace BasicAPI.Services.GetService
         {
             return breakfastContext.Breakfast.Find(Id) != null ? breakfastContext.Breakfast.Find(Id) : Error.NotFound("Breakfast not found.");
         }
-
         public ErrorOr<Updated> UpdateBreakfast(Breakfast request, BreakfastContext breakfastContext)
         {
-
-            return Result.Updated;
+            if (!breakfastContext.Breakfast.IsNullOrEmpty())
+            {
+                var toBeUpdated = breakfastContext.Breakfast.Find(request.Id);
+                if (toBeUpdated != null)
+                {
+                    toBeUpdated.Update(request);
+                    breakfastContext.SaveChanges();
+                    return Result.Updated;
+                }
+                else
+                    return Error.NotFound("Breakfast not found.");
+            }
+            else
+                return Error.NotFound("No Breakfast Found.");
         }
         public ErrorOr<Deleted> DeleteBreakfast(int Id, BreakfastContext breakfastContext)
         {
@@ -38,7 +49,7 @@ namespace BasicAPI.Services.GetService
                     return Error.NotFound("Breakfast not found.");
             }
             else
-                return Error.NotFound("Breakfast not found.");
+                return Error.NotFound("No Breakfast Found.");
         }
     }
 }
