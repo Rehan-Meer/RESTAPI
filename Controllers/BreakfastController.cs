@@ -2,19 +2,16 @@
 using BasicAPI.DBContext;
 using BasicAPI.Services.GetService;
 using ErrorOr;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasicAPI.Controllers
 {
-    [Authorize]
     public class BreakfastController : MainController
     {
-        private readonly IBreakfastService breakfastService;                                       // Service dependency Injection
+        private readonly IBreakfastService breakfastService;
+        private readonly IMapper mapper;
+        private readonly BreakfastContext DbContext;
 
-        private readonly IMapper mapper;                                                           // AutoMapper for translation between DTOs and InternalModels
-
-        private readonly BreakfastContext DbContext;                                               // Database Context
         public BreakfastController(IBreakfastService _breakfastService, IMapper _mapper, BreakfastContext _DbContext)
         {
             breakfastService = _breakfastService;
