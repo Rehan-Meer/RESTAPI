@@ -1,6 +1,6 @@
 ﻿using BasicAPI.DBContext;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -21,12 +21,12 @@ namespace BasicAPI.Controllers
 
         [Route(RouteConstants.GenerateToken)]
         [HttpPost]
-        public ActionResult TokenManager(User currentUser)
+        public ActionResult TokenManager(User _user)
         {
             if (!_dbContext.User.IsNullOrEmpty())
             {
-                User? user = _dbContext.User.Find(currentUser.Id);
-                if (user != null && user.Id == currentUser.Id && user.Password == currentUser.Password)
+                User? user = _dbContext.User.First(user => user.Equals(_user));
+                if (user != null)
                 {
                     var token = TokenGenerator();
                     return Ok(token);
