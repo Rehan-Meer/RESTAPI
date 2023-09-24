@@ -38,7 +38,7 @@ namespace BasicAPI.Controllers
 
         [HttpPut]
         [Route(RouteConstants.UpdateBreakfast)]
-        public IActionResult PutAll(BreakfastDto _request)
+        public IActionResult UpdateBreakfast(BreakfastDto _request)
         {
             Breakfast breakfast = mapper.Map<Breakfast>(_request);
             ErrorOr<Updated> response = breakfastService.UpdateBreakfast(breakfast, DbContext);

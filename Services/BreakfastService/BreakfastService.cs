@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using BasicAPI.DBContext;
+﻿using BasicAPI.DBContext;
 using ErrorOr;
 using Microsoft.IdentityModel.Tokens;
 
@@ -7,25 +6,25 @@ namespace BasicAPI.Services.GetService
 {
     public class BreakfastService : IBreakfastService
     {
-        public ErrorOr<Created> CreateBreakfast(Breakfast request, BreakfastContext breakfastContext)
+        public ErrorOr<Created> CreateBreakfast(Breakfast request, BreakfastContext _dbContext)
         {
-            breakfastContext.Breakfast.Add(request);
-            breakfastContext.SaveChanges();
+            _dbContext.Breakfast.Add(request);
+            _dbContext.SaveChanges();
             return Result.Created;
         }
-        public ErrorOr<Breakfast> GetBreakfast(int Id, BreakfastContext breakfastContext)
+        public ErrorOr<Breakfast> GetBreakfast(int Id, BreakfastContext _dbContext)
         {
-            return breakfastContext.Breakfast.Find(Id) != null ? breakfastContext.Breakfast.Find(Id) : Error.NotFound("Breakfast not found.");
+            return _dbContext.Breakfast.Find(Id) != null ? _dbContext.Breakfast.Find(Id) : Error.NotFound("Breakfast not found.");
         }
-        public ErrorOr<Updated> UpdateBreakfast(Breakfast request, BreakfastContext breakfastContext)
+        public ErrorOr<Updated> UpdateBreakfast(Breakfast request, BreakfastContext _dbContext)
         {
-            if (!breakfastContext.Breakfast.IsNullOrEmpty())
+            if (!_dbContext.Breakfast.IsNullOrEmpty())
             {
-                var toBeUpdated = breakfastContext.Breakfast.Find(request.Id);
+                var toBeUpdated = _dbContext.Breakfast.Find(request.Id);
                 if (toBeUpdated != null)
                 {
                     toBeUpdated.Update(request);
-                    breakfastContext.SaveChanges();
+                    _dbContext.SaveChanges();
                     return Result.Updated;
                 }
                 else
@@ -34,15 +33,15 @@ namespace BasicAPI.Services.GetService
             else
                 return Error.NotFound("No Breakfast Found.");
         }
-        public ErrorOr<Deleted> DeleteBreakfast(int Id, BreakfastContext breakfastContext)
+        public ErrorOr<Deleted> DeleteBreakfast(int Id, BreakfastContext _dbContext)
         {
-            if (!breakfastContext.Breakfast.IsNullOrEmpty())
+            if (!_dbContext.Breakfast.IsNullOrEmpty())
             {
-                var toBeDeleted = breakfastContext.Breakfast.Find(Id);
+                var toBeDeleted = _dbContext.Breakfast.Find(Id);
                 if (toBeDeleted != null)
                 {
-                    breakfastContext.Breakfast.Remove(toBeDeleted);
-                    breakfastContext.SaveChanges();
+                    _dbContext.Breakfast.Remove(toBeDeleted);
+                    _dbContext.SaveChanges();
                     return Result.Deleted;
                 }
                 else
