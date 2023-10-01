@@ -1,55 +1,36 @@
 ﻿using BasicAPI.DBContext;
+using BasicAPI.Services.TokenManager;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 
 namespace BasicAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route(RouteConstants.TokenController)]
     public class TokenController : ControllerBase
     {
-        private readonly IConfiguration _config;
-        private readonly BreakfastContext _dbContext;
-        public TokenController(IConfiguration config, BreakfastContext dbContext)
+        private readonly ITokenManager tokenManager;
+        private readonly BreakfastContext dbContext;
+        public TokenController(BreakfastContext _dbContext, ITokenManager _tokenManager)
         {
-            _config = config;
-            _dbContext = dbContext;
+            dbContext = _dbContext;
+            tokenManager = _tokenManager;
         }
 
+        [AllowAnonymous]
         [Route(RouteConstants.GenerateToken)]
         [HttpPost]
-        public ActionResult TokenManager(User _user)
+        public IActionResult TokenManager(User _user)
         {
-            if (!_dbContext.User.IsNullOrEmpty())
+            var validUser = dbContext.User.First(user => user.Equals(_user));
+            if (validUser != null)
             {
-                User? user = _dbContext.User.First(user => user.Equals(_user));
-                if (user != null)
-                {
-                    var token = TokenGenerator();
-                    return Ok(token);
-                }
-                else
-                    return Unauthorized();
+                var token = tokenManager.GenerateToken(validUser);
+                return Ok(token);
             }
             else
-                return NotFound();
-        }
-
-        private string TokenGenerator()
-        {
-            SymmetricSecurityKey SecurityKey = new(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                _config["Jwt:Issuer"],
-                _config["Jwt:Audience"],
-                expires: DateTime.Now.AddMinutes(15),
-                signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                return Unauthorized();
         }
     }
 }
