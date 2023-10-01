@@ -11,8 +11,8 @@ namespace BasicAPI.Controllers
     public class TokenController : ControllerBase
     {
         private readonly ITokenManager tokenManager;
-        private readonly BreakfastContext dbContext;
-        public TokenController(BreakfastContext _dbContext, ITokenManager _tokenManager)
+        private readonly DBContext.DBContext dbContext;
+        public TokenController(DBContext.DBContext _dbContext, ITokenManager _tokenManager)
         {
             dbContext = _dbContext;
             tokenManager = _tokenManager;

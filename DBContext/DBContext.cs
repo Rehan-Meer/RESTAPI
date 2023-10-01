@@ -2,9 +2,9 @@
 
 namespace BasicAPI.DBContext
 {
-    public class BreakfastContext : DbContext
+    public class DBContext : DbContext
     {
-        public BreakfastContext(DbContextOptions<BreakfastContext> options) : base(options) { }
+        public DBContext(DbContextOptions<DBContext> options) : base(options) { }
 
         public DbSet<Breakfast> Breakfast { get; set; }
 

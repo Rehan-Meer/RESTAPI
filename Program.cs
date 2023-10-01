@@ -10,7 +10,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddDbContext<BreakfastContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Sql")));
+builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Sql")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -12,9 +12,9 @@ namespace BasicAPI.Controllers
     {
         private readonly IBreakfastService breakfastService;
         private readonly IMapper mapper;
-        private readonly BreakfastContext dbContext;
+        private readonly DBContext.DBContext dbContext;
 
-        public BreakfastController(IBreakfastService _breakfastService, IMapper _mapper, BreakfastContext _DbContext)
+        public BreakfastController(IBreakfastService _breakfastService, IMapper _mapper, DBContext.DBContext _DbContext)
         {
             breakfastService = _breakfastService;
             mapper = _mapper;

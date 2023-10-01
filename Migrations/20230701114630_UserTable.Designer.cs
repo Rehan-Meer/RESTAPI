@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BasicAPI.Migrations
 {
-    [DbContext(typeof(BreakfastContext))]
+    [DbContext(typeof(DBContext.DBContext))]
     [Migration("20230701114630_UserTable")]
     partial class UserTable
     {
