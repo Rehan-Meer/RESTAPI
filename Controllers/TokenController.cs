@@ -1,5 +1,4 @@
-﻿using BasicAPI.DBContext;
-using BasicAPI.Services.TokenManager;
+﻿using BasicAPI.Services.TokenManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,8 +10,8 @@ namespace BasicAPI.Controllers
     public class TokenController : ControllerBase
     {
         private readonly ITokenManager tokenManager;
-        private readonly DBContext.DBContext dbContext;
-        public TokenController(DBContext.DBContext _dbContext, ITokenManager _tokenManager)
+        private readonly DBContext.ClientDBContext dbContext;
+        public TokenController(DBContext.ClientDBContext _dbContext, ITokenManager _tokenManager)
         {
             dbContext = _dbContext;
             tokenManager = _tokenManager;
@@ -21,16 +20,26 @@ namespace BasicAPI.Controllers
         [AllowAnonymous]
         [Route(RouteConstants.GenerateToken)]
         [HttpPost]
-        public IActionResult TokenManager(User _user)
+        public IActionResult TokenManager([FromBody] User _user)
         {
-            var validUser = dbContext.User.First(user => user.Equals(_user));
-            if (validUser != null)
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            try
             {
-                var token = tokenManager.GenerateToken(validUser);
-                return Ok(token);
+                var validUser = dbContext.User.FirstOrDefault(user => user.Equals(_user));
+                if (validUser != null)
+                {
+                    var token = tokenManager.GenerateToken(validUser);
+                    return Ok(token);
+                }
+                else
+                    return Unauthorized();
             }
-            else
-                return Unauthorized();
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

@@ -10,11 +10,12 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Sql")));
+builder.Services.AddDbContext<ClientDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Sql")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IBreakfastService, BreakfastService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddAuthentication(auth =>
@@ -39,6 +40,15 @@ AddJwtBearer(token =>
 });
 builder.Services.AddSingleton<ITokenManager, TokenManager>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost4200",
+        builder => builder
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -48,6 +58,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseExceptionHandler("/api/Main/GlobalExceptionHandler");
 app.UseHttpsRedirection();
+app.UseCors("AllowLocalhost4200");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

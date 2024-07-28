@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BasicAPI.Migrations
 {
-    [DbContext(typeof(DBContext.DBContext))]
-    [Migration("20230629140109_Breakfast_NewProperties")]
-    partial class Breakfast_NewProperties
+    [DbContext(typeof(DBContext.ClientDBContext))]
+    [Migration("20240726100808_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace BasicAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BasicAPI.Breakfast", b =>
+            modelBuilder.Entity("BasicAPI.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,12 +39,13 @@ namespace BasicAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Breakfast");
+                    b.ToTable("User");
                 });
 #pragma warning restore 612, 618
         }
