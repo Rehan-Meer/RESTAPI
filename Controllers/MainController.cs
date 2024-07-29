@@ -10,7 +10,6 @@ namespace BasicAPI.Controllers
     [Route(RouteConstants.MainController)]
     public class MainController : ControllerBase
     {
-
         public readonly IUserService userService;
         public readonly ITaskService taskService;
         public readonly IMapper mapper;
@@ -35,7 +34,6 @@ namespace BasicAPI.Controllers
                 ErrorType.Conflict => StatusCodes.Status409Conflict,
                 _ => StatusCodes.Status500InternalServerError
             };
-
             return Problem(statusCode: statusCode, detail: firstError.Description);
         }
     }

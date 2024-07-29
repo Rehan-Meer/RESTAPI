@@ -7,7 +7,7 @@ namespace BasicAPI
     {
         public MappingProfile()
         {
-            CreateMap<TaskStatusEnumDto, TaskStatus>().ReverseMap();
+            CreateMap<TaskStatusEnumDto, Models.Enumerations.TaskStatus>().ReverseMap();
 
             CreateMap<TaskDto, Task>().ReverseMap();
 

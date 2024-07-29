@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using Microsoft.EntityFrameworkCore;
 
 namespace BasicAPI.Services.GetService
 {
@@ -10,12 +11,14 @@ namespace BasicAPI.Services.GetService
             _dbContext.SaveChanges();
             return Result.Created;
         }
-        public ErrorOr<Task> GetTask(int Id, DBContext.ClientDBContext _dbContext) =>
-            _dbContext.Task.Find(Id) is Task task ? task : Error.NotFound("Task not found.");
 
-        public ErrorOr<List<Task>> GetAllTasks(DBContext.ClientDBContext _dbContext) =>
-            _dbContext.Task.Count() > 0 ? _dbContext.Task.ToList() : Error.NotFound("Task not found.");
-
+        public async Task<ErrorOr<List<Task>>> GetTasks(int Id, DBContext.ClientDBContext _dbContext)
+        {
+            var tasks = await _dbContext.Task.Where(t => t.UserId == Id).ToListAsync();
+            if (tasks.Count == 0)
+                return Error.NotFound("Task(s) not found.");
+            return tasks;
+        }
         public ErrorOr<Updated> UpdateTask(Task task, DBContext.ClientDBContext _dbContext)
         {
             var toBeUpdated = _dbContext.Task.First(u => u.Id == task.Id);
@@ -26,10 +29,10 @@ namespace BasicAPI.Services.GetService
             _dbContext.SaveChanges();
             return Result.Updated;
         }
+
         public ErrorOr<Deleted> DeleteTask(int Id, DBContext.ClientDBContext _dbContext)
         {
             var toBeDeleted = _dbContext.Task.First(u => u.Id == Id);
-
             if (toBeDeleted == null)
                 return Error.NotFound("Task not found.");
 

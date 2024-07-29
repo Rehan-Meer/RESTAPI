@@ -7,7 +7,7 @@ namespace BasicAPI.Services.GetService
     {
         ErrorOr<Created> CreateTask(Task task, ClientDBContext _dbContext);
 
-        ErrorOr<Task> GetTask(int Id, ClientDBContext _dbContext);
+        Task<ErrorOr<List<Task>>> GetTasks(int Id, ClientDBContext _dbContext);
 
         ErrorOr<Updated> UpdateTask(Task task, ClientDBContext _dbContext);
 

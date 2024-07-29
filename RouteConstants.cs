@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace BasicAPI
+﻿namespace BasicAPI
 {
     public static class RouteConstants
     {
@@ -16,6 +14,8 @@ namespace BasicAPI
 
         public const string GlobalExceptionHandler = "GlobalExceptionHandler";
 
+        #endregion
+
         #region User Endpoints
 
         public const string GetUser = "GetUser";
@@ -30,7 +30,7 @@ namespace BasicAPI
         #endregion
 
         #region Task Endpoints
-        public const string GetTask = "GetTask";
+        public const string GetTasks = "GetTasks";
 
         public const string CreateTask = "CreateTask";
 
@@ -40,7 +40,5 @@ namespace BasicAPI
         #endregion
 
         public const string GenerateToken = "GenerateToken";
-
-        #endregion
     }
 }
