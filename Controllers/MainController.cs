@@ -15,7 +15,7 @@ namespace BasicAPI.Controllers
         public readonly IMapper mapper;
         public readonly ClientDBContext dbContext;
 
-        public MainController(IUserService _userService, ITaskService _taskService ,IMapper _mapper, ClientDBContext _DbContext)
+        public MainController(IUserService _userService, ITaskService _taskService, IMapper _mapper, ClientDBContext _DbContext)
         {
             userService = _userService;
             taskService = _taskService;

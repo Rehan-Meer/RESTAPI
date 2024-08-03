@@ -12,9 +12,9 @@ namespace BasicAPI.Services.GetService
             return Result.Created;
         }
 
-        public async Task<ErrorOr<List<Task>>> GetTasks(int Id, DBContext.ClientDBContext _dbContext)
+        public  ErrorOr<List<Task>> GetTasks(int Id, DBContext.ClientDBContext _dbContext)
         {
-            var tasks = await _dbContext.Task.Where(t => t.UserId == Id).ToListAsync();
+            var tasks = _dbContext.Task.Where(t => t.UserId == Id).ToList();
             if (tasks.Count == 0)
                 return Error.NotFound("Task(s) not found.");
             return tasks;

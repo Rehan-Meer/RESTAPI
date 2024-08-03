@@ -59,7 +59,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseExceptionHandler("/api/Main/GlobalExceptionHandler");
+app.UseExceptionHandler(new ExceptionHandlerOptions
+{
+    ExceptionHandlingPath = "/api/Main/GlobalExceptionHandler",
+    AllowStatusCode404Response = true
+});
 app.UseHttpsRedirection();
 app.UseCors("AllowLocalhost4200");
 app.UseAuthentication();

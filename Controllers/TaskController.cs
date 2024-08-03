@@ -16,8 +16,8 @@ namespace BasicAPI.Controllers
         [Route(RouteConstants.GetTasks)]
         public IActionResult GetTasks(int ID)
         {
-            Task<ErrorOr<List<Task>> >response = taskService.GetTasks(ID, dbContext);
-            return response.Result.IsError ? GetProblem(response.Result.Errors) : Ok(mapper.Map<List<TaskDto>>(response.Result.Value));
+            ErrorOr<List<Task> >response = taskService.GetTasks(ID, dbContext);
+            return response.IsError ? GetProblem(response.Errors) : Ok(mapper.Map<List<TaskDto>>(response.Value));
         }
 
         [HttpPost]
