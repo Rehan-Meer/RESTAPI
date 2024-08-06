@@ -3,6 +3,7 @@ using BasicAPI.DBContext;
 using BasicAPI.DTOs;
 using BasicAPI.Services.GetService;
 using ErrorOr;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasicAPI.Controllers
@@ -21,8 +22,9 @@ namespace BasicAPI.Controllers
         }
 
         [HttpPost]
+        [EnableCors("AllowSpecificOrigin")]
         [Route(RouteConstants.CreateTask)]
-        public IActionResult CreateTask(TaskDto task)
+        public IActionResult CreateTask([FromBody] TaskDto task)
         {
             var taskObject = mapper.Map<Task>(task);
             ErrorOr<Created> response = taskService.CreateTask(taskObject, dbContext);
