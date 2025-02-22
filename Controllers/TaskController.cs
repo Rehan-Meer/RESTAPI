@@ -3,6 +3,7 @@ using BasicAPI.DBContext;
 using BasicAPI.DTOs;
 using BasicAPI.Services.GetService;
 using ErrorOr;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasicAPI.Controllers
@@ -16,13 +17,14 @@ namespace BasicAPI.Controllers
         [Route(RouteConstants.GetTasks)]
         public IActionResult GetTasks(int ID)
         {
-            ErrorOr<List<Task> >response = taskService.GetTasks(ID, dbContext);
+            ErrorOr<List<Task>> response = taskService.GetTasks(ID, dbContext);
             return response.IsError ? GetProblem(response.Errors) : Ok(mapper.Map<List<TaskDto>>(response.Value));
         }
 
         [HttpPost]
+        [EnableCors("AllowSpecificOrigin")]
         [Route(RouteConstants.CreateTask)]
-        public IActionResult CreateTask(TaskDto task)
+        public IActionResult CreateTask([FromBody] TaskDto task)
         {
             var taskObject = mapper.Map<Task>(task);
             ErrorOr<Created> response = taskService.CreateTask(taskObject, dbContext);

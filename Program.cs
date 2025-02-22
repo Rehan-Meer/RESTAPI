@@ -49,11 +49,13 @@ AddJwtBearer(token =>
 builder.Services.AddSingleton<ITokenManager, TokenManager>();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost4200",
-        builder => builder
-            .WithOrigins("http://localhost:4200")
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:4200")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
 });
 var app = builder.Build();
 
